@@ -177,7 +177,9 @@ public class MainEventHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
         if (evt instanceof IdleStateEvent) {
-            LOGGER.info("[{}] timed out", NetworkUtil.session(ctx.channel()));
+            java.net.InetSocketAddress address = (java.net.InetSocketAddress) ctx.channel().remoteAddress();
+            String server = address.getAddress().getHostAddress();
+            LOGGER.info("[{} < {}] timed out", NetworkUtil.session(ctx.channel()), server);
             closeChannel(ctx.channel());
         }
     }
